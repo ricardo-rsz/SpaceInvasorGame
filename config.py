@@ -1,0 +1,31 @@
+# Game window and general settings
+WIDTH = 800
+HEIGHT = 600
+FPS = 60
+BACKGROUND_COLOR = (0, 0, 0)
+PLAYER_COLOR = (60, 140, 255)
+PLAYER_COLOR2 = (255, 140, 60)
+PLAYER_SPEED = 6
+
+# Obstacle settings
+OBSTACLES_COLORS = [
+    (255, 0, 0),
+    (0, 255, 0),
+    (0, 0, 255),
+    (255, 255, 0),
+    (255, 0, 255),
+    (0, 255, 255),
+]
+SPAWN_OBSTACLE_DELAY = 500  # milliseconds
+
+# Lives and temporary protection settings
+PLAYER_LIVES = 3
+HIT_INVULNERABILITY_MS = 2000
+
+# Power-up settings
+POWERUP_SPAWN_INTERVAL_MS = 9000
+POWERUP_SPEED = 3
+SPEED_BOOST_MULTIPLIER = 1.7
+SPEED_BOOST_DURATION_MS = 5000
+POWERUP_SHIELD_DURATION_MS = 5000
+MAX_PLAYER_LIVES = 5
