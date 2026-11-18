@@ -1,6 +1,6 @@
 import pygame
 
-from config import (
+from SpaceGameOld.config import (
     HEIGHT,
     HIT_INVULNERABILITY_MS,
     MAX_PLAYER_LIVES,

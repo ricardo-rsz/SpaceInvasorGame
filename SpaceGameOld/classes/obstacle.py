@@ -2,7 +2,7 @@ import random
 
 import pygame
 
-from config import HEIGHT, OBSTACLES_COLORS, WIDTH
+from SpaceGameOld.config import HEIGHT, OBSTACLES_COLORS, WIDTH
 
 
 class Obstacle:

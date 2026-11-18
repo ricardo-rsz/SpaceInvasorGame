@@ -1,6 +1,6 @@
 import pygame
 
-from config import (
+from SpaceGameOld.config import (
     BACKGROUND_COLOR,
     FPS,
     HEIGHT,
@@ -8,7 +8,7 @@ from config import (
     POWERUP_SPAWN_INTERVAL_MS,
     WIDTH,
 )
-from classes import *
+from SpaceGameOld.classes import *
 
 
 # Initialize Pygame and create the game window.

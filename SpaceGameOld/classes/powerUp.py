@@ -1,7 +1,7 @@
 import random
 import pygame
 
-from config import (
+from SpaceGameOld.config import (
     HEIGHT,
     POWERUP_SHIELD_DURATION_MS,
     POWERUP_SPEED,

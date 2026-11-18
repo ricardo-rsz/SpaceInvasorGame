@@ -1,6 +1,6 @@
 import pygame
 
-from config import HEIGHT, WIDTH
+from SpaceGameOld.config import HEIGHT, WIDTH
 
 
 class Pause:

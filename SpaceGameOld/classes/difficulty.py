@@ -1,4 +1,4 @@
-from config import SPAWN_OBSTACLE_DELAY
+from SpaceGameOld.config import SPAWN_OBSTACLE_DELAY
 
 
 class Difficulty:
