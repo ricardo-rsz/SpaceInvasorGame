@@ -20,6 +20,7 @@ class Player:
         """Initialize the player with a position and a ship image"""
         self.image = load_image(image_name, width=PLAYER_WIDTH)
         self.normal_image = self.image
+        self.mask = pygame.mask.from_surface(self.image)
         self.death_images = [
             load_image(damage_image, width=PLAYER_WIDTH)
             for damage_image in reversed(damage_images)
@@ -139,6 +140,7 @@ class Player:
         self.lives = PLAYER_LIVES
         self.invulnerable_until = 0
         self.image = self.normal_image
+        self.mask = pygame.mask.from_surface(self.image)
         self.death_animation_started = None
 
     def death_animation_active(self):

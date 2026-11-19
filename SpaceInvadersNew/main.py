@@ -167,7 +167,7 @@ while running:
             obstacle.move()
             # A hit costs one life; the invulnerability time prevents losing several lives at once
             for alive_player in alive_players:
-                if alive_player.rect.colliderect(obstacle.rect):
+                if pygame.sprite.collide_mask(alive_player, obstacle):
                     if alive_player.take_hit(game_time):
                         player_explosion_sound.play()
 
@@ -177,7 +177,7 @@ while running:
         for obstacle in obstacles:
             hit_by_laser = False
             for shot in laser.sprites():
-                if shot.rect.colliderect(obstacle.rect):
+                if pygame.sprite.collide_mask(shot, obstacle):
                     shot.kill()
                     hit_by_laser = True
                     meteor_explosion_sound.play()

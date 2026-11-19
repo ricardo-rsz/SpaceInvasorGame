@@ -10,6 +10,7 @@ class Laser(pygame.sprite.Sprite):
         self.rect.centerx = x
         self.rect.bottom = y
         self.speed = -10
+        self.mask = pygame.mask.from_surface(self.image)
 
     def update(self):
         self.rect.y += self.speed

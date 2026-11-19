@@ -23,6 +23,7 @@ SPEED_BOOST_AMOUNT = 4  # Extra speed given by the speed power-up
 
 OBSTACLE_MIN_SIZE = 20  # Minimum obstacle size in pixels
 OBSTACLE_MAX_SIZE = 70  # Maximum obstacle size in pixels
+OBSTACLE_ROTATION_SPEED = 2  # Degrees rotated per frame
 
 OBSTACLES_COLORS = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (255, 0, 255), (0, 255, 255)]
 

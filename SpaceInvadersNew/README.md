@@ -11,7 +11,8 @@ Juego arcade 2D desarrollado en Python con [Pygame](https://www.pygame.org/). Ac
   - Jugador 2 (naranja): se mueve con **W A S D** (más lento).
 - **Obstáculos** que caen desde la parte superior:
   - Aparecen inicialmente cada 500 ms en una posición horizontal aleatoria.
-  - Color y velocidad aleatorios.
+  - Tamaño, velocidad y rotación aleatorios.
+  - Colisiones precisas basadas en la forma visible de meteoritos y láseres.
   - Se eliminan al salir de la pantalla.
 - **Puntuación**: +1 por cada obstáculo esquivado que sale de la pantalla.
 - **Pausa** con la tecla ESC.
