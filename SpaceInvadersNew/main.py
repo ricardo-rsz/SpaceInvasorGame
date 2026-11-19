@@ -181,6 +181,7 @@ while running:
                     shot.kill()
                     hit_by_laser = True
                     meteor_explosion_sound.play()
+                    remaining_obstacles.extend(obstacle.split())
                     score += 2
                     high_score = max(high_score, score)
                     break

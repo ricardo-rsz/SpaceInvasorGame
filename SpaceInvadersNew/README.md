@@ -13,6 +13,7 @@ Juego arcade 2D desarrollado en Python con [Pygame](https://www.pygame.org/). Ac
   - Aparecen inicialmente cada 500 ms en una posición horizontal aleatoria.
   - Tamaño, velocidad y rotación aleatorios.
   - Colisiones precisas basadas en la forma visible de meteoritos y láseres.
+  - Los meteoritos alcanzados por un láser se parten en dos fragmentos más pequeños.
   - Se eliminan al salir de la pantalla.
 - **Puntuación**: +1 por cada obstáculo esquivado que sale de la pantalla.
 - **Pausa** con la tecla ESC.
