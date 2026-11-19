@@ -35,7 +35,8 @@ Juego arcade 2D desarrollado en Python con [Pygame](https://www.pygame.org/). Ac
 
 | Archivo        | Descripción                                             |
 |----------------|---------------------------------------------------------|
-| `main.py`      | Inicialización, bucle principal, colisiones y HUD.      |
+| `main.py`      | Punto de entrada que inicia el juego.                   |
+| `game.py`      | Estado, bucle, eventos, actualización, colisiones y HUD. |
 | `config.py`    | Constantes del juego.                                   |
 | `player.py`    | Clase `Player`: movimiento (flechas / WASD) y dibujado. |
 | `obstacle.py`  | Clase `Obstacle`: creación aleatoria, caída y dibujado. |
