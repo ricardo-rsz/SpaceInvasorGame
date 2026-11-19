@@ -4,6 +4,7 @@ from background import draw_background
 from laser import Laser
 from player import Player
 from obstacle import Obstacle
+from enemy import Enemy
 from powerup import PowerUp
 from scores import top_scores, save_score
 from assets import load_image, load_sound
@@ -30,12 +31,14 @@ num_players = 1  # Number of players chosen in the selection screen (1 or 2)
 active_players = []  # Players taking part in the current game
 
 obstacles = [] # List to store obstacles
+enemies = []  # Enemy ships on screen
 powerups = []  # List to store the power-ups falling on screen
 
 # Game clock: milliseconds of real play. It only advances while the game is running,
 # so pauses, menus and the game over screen never count towards any timer.
 game_time = 0
 last_obstacle_spawn_time = 0  # Game time when the last obstacle was spawned
+last_enemy_spawn_time = 0  # Game time when the last enemy was spawned
 last_powerup_spawn_time = 0  # Game time when the last power-up was spawned
 
 y1 = 0
@@ -51,6 +54,7 @@ entering_name = False  # True while the player types their name after a game ove
 player_name = ""  # Name being typed
 
 laser = pygame.sprite.Group()
+enemy_lasers = pygame.sprite.Group()
 last_laser_fire_times = {player: -LASER_FIRE_DELAY, player2: -LASER_FIRE_DELAY}
 
 survival_time = 0  # Seconds the players have survived
@@ -76,6 +80,7 @@ while running:
                 # Start the game clock from zero when the game really begins
                 game_time = 0
                 last_obstacle_spawn_time = 0
+                last_enemy_spawn_time = 0
                 last_powerup_spawn_time = 0
         # Name entry after a game over: letters build the name, BACKSPACE deletes, ENTER saves
         elif entering_name:
@@ -103,8 +108,10 @@ while running:
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_r and game_over:
             score = 0
             obstacles = []
+            enemies = []
             powerups = []
             laser.empty()
+            enemy_lasers.empty()
             last_laser_fire_times = {player: -LASER_FIRE_DELAY, player2: -LASER_FIRE_DELAY}
             for each_player in (player, player2):
                 each_player.reset_position()
@@ -132,6 +139,11 @@ while running:
         if game_time - last_obstacle_spawn_time > spawn_delay:
             obstacles.append(Obstacle())
             last_obstacle_spawn_time = game_time
+
+        # ENEMY spawning logic
+        if game_time - last_enemy_spawn_time > ENEMY_SPAWN_DELAY:
+            enemies.append(Enemy())
+            last_enemy_spawn_time = game_time
 
         # POWER-UPS spawning logic
         if game_time - last_powerup_spawn_time > POWERUP_SPAWN_DELAY:
@@ -188,6 +200,39 @@ while running:
             if not hit_by_laser:
                 remaining_obstacles.append(obstacle)
         obstacles = remaining_obstacles
+
+        # Move enemy ships and fire their lasers
+        for enemy in enemies:
+            enemy.move()
+            if enemy.should_fire(game_time):
+                enemy_lasers.add(enemy.fire())
+                laser_sound.play()
+
+        # Enemy lasers damage the players
+        enemy_lasers.update()
+        for shot in enemy_lasers.sprites():
+            for alive_player in alive_players:
+                if pygame.sprite.collide_mask(shot, alive_player):
+                    shot.kill()
+                    if alive_player.take_hit(game_time):
+                        player_explosion_sound.play()
+                    break
+
+        # Player lasers destroy enemy ships
+        remaining_enemies = []
+        for enemy in enemies:
+            hit_by_laser = False
+            for shot in laser.sprites():
+                if pygame.sprite.collide_mask(shot, enemy):
+                    shot.kill()
+                    hit_by_laser = True
+                    meteor_explosion_sound.play()
+                    score += 3
+                    high_score = max(high_score, score)
+                    break
+            if not hit_by_laser and not enemy.is_off_screen():
+                remaining_enemies.append(enemy)
+        enemies = remaining_enemies
 
         # The game ends when every active player has run out of lives
         if not any(p.is_alive() for p in active_players):
@@ -246,7 +291,13 @@ while running:
     for obstacle in obstacles:
         obstacle.draw(screen)  # Draw each obstacle
 
+    for enemy in enemies:
+        enemy.draw(screen)
+
     for shot in laser:
+        screen.blit(shot.image, shot.rect)
+
+    for shot in enemy_lasers:
         screen.blit(shot.image, shot.rect)
 
     for powerup in powerups:

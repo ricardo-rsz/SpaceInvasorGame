@@ -49,6 +49,13 @@ PLAYER_WIDTH =  60  #Width of the player ship image
 METEOR_IMAGES = ["meteorBrown_big1.png", "meteorBrown_big2.png", "meteorBrown_big3.png",
                 "meteorGrey_big1.png", "meteorGrey_big2.png", "meteorGrey_big3.png"]  # List of meteor images
 
+# Enemy Ships
+ENEMY_IMAGES = ["enemyBlack1.png", "enemyBlue1.png", "enemyGreen1.png", "enemyRed1.png"]
+ENEMY_WIDTH = 60
+ENEMY_SPAWN_DELAY = 5000  # Milliseconds between enemy ships
+ENEMY_SPEED = 2
+ENEMY_FIRE_DELAY = 1500  # Milliseconds between enemy shots
+
 # Power-up Sprites
 SPEED_POWERUP_IMAGE = "powerupYellow_bolt.png"
 LIFE_POWERUP_IMAGE = "pill_green.png"

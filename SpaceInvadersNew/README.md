@@ -25,6 +25,7 @@ Juego arcade 2D desarrollado en Python con [Pygame](https://www.pygame.org/). Ac
 - **Sistema de vidas**: cada jugador tiene 3 vidas y 2 s de invulnerabilidad (parpadeo) tras cada impacto.
 - **Power-ups** cada 8 s: velocidad temporal (S), vida extra (L) o escudo de invulnerabilidad (I).
 - **Disparos láser automáticos**: cada jugador dispara periódicamente mientras sigue vivo.
+- **Naves enemigas**: aparecen durante la partida, disparan láseres rojos y pueden ser destruidas.
 - **Efectos de sonido** para disparos, impactos, daño del jugador y power-ups.
 - **Game Over** cuando todos los jugadores activos se quedan sin vidas.
 - **Reinicio** de la partida con la tecla R tras el Game Over.
@@ -38,6 +39,7 @@ Juego arcade 2D desarrollado en Python con [Pygame](https://www.pygame.org/). Ac
 | `config.py`    | Constantes del juego.                                   |
 | `player.py`    | Clase `Player`: movimiento (flechas / WASD) y dibujado. |
 | `obstacle.py`  | Clase `Obstacle`: creación aleatoria, caída y dibujado. |
+| `enemy.py`     | Clase `Enemy`: movimiento y disparos enemigos.       |
 | `powerup.py`   | Clase `PowerUp`: objetos especiales y sus efectos.      |
 | `scores.py`    | Lectura y guardado de récords en `scores.txt`.          |
 
