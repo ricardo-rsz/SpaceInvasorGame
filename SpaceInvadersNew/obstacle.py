@@ -23,12 +23,14 @@ class Obstacle:
         self.can_split = can_split
         self.angle = 0
         self.rotation_speed = random.choice((-1, 1)) * OBSTACLE_ROTATION_SPEED
+        # Exercise 4: Pixel masks enable precise meteorite collisions.
         self.mask = pygame.mask.from_surface(self.image)
 
     def move(self):
         """Move the obstacle down the screen"""
         self.rect.y += self.speed
         center = self.rect.center
+        # Exercise 4: Rotate each meteorite while preserving its center.
         self.angle = (self.angle + self.rotation_speed) % 360
         self.image = pygame.transform.rotate(self.original_image, self.angle)
         self.rect = self.image.get_rect(center=center)
@@ -36,6 +38,7 @@ class Obstacle:
 
     def split(self):
         """Create two smaller fragments when this meteorite can split"""
+        # Exercise 5: Split a hit meteorite into two smaller fragments.
         if not self.can_split:
             return []
 

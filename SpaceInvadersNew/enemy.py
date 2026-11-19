@@ -12,6 +12,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__()
+        # Exercise 6: Create an enemy ship that can fire at players.
         image_name = random.choice(ENEMY_IMAGES)
         self.image = load_image(image_name, width=ENEMY_WIDTH)
         x = random.randint(0, WIDTH - self.image.get_width())

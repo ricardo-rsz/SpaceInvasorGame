@@ -19,8 +19,10 @@ class Game:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("Moving Player Game")
         self.clock = pygame.time.Clock()
+        # Exercise 1: Load and scale the game background.
         self.background = pygame.transform.scale(load_image(BACKGROUND_IMAGE, WIDTH), (WIDTH, HEIGHT))
 
+        # Exercise 3: Load sound effects for shots, impacts, and damage.
         self.laser_sound = load_sound(LASER_SOUND)
         self.meteor_explosion_sound = load_sound(METEOR_EXPLOSION_SOUND)
         self.player_explosion_sound = load_sound(PLAYER_EXPLOSION_SOUND)
@@ -215,6 +217,7 @@ class Game:
                     hit_by_laser = True
                     self.meteor_explosion_sound.play()
                     remaining_obstacles.extend(obstacle.split())
+                    # Exercise 2: Destroying a meteorite awards bonus points.
                     self.add_score(2)
                     break
             if not hit_by_laser and not obstacle.is_off_screen():
@@ -260,6 +263,7 @@ class Game:
             self.player2.moveWASD()
 
     def fire_player_lasers(self, alive_players):
+        # Exercise 2: Players fire automatically and can destroy meteorites.
         for player in alive_players:
             if self.game_time - self.last_laser_fire_times[player] >= LASER_FIRE_DELAY:
                 self.laser.add(Laser(player.rect.centerx, player.rect.top))
@@ -271,6 +275,7 @@ class Game:
         self.high_score = max(self.high_score, self.score)
 
     def draw(self):
+        # Exercise 7: Scroll two background copies for continuous movement.
         self.background_y1, self.background_y2 = draw_background(
             self.screen,
             self.background,
