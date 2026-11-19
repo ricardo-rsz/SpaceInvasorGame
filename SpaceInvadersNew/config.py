@@ -41,7 +41,7 @@ DEFAULT_PLAYER_NAME = "Player"  # Name saved when the player leaves it empty
 
 # Player Sprites
 PLAYER_IMAGE = "playerShip1_blue.png"  # Player 1 ship image
-PLAYER2_IMAGE = "playerShip1_orange.png"  # Player 2 ship image
+PLAYER2_IMAGE = "playerShip2_orange.png"  # Player 2 ship image
 PLAYER_WIDTH =  60  #Width of the player ship image
 
 # Meteor Sprites
@@ -54,4 +54,14 @@ LIFE_POWERUP_IMAGE = "pill_green.png"
 SHIELD_POWERUP_IMAGE = "powerupBlue_shield.png"
 
 # Background Sprites
-BACKGROUND_IMAGE = "purple.png"
+BACKGROUND_IMAGE = "darkPurple.png"
+
+# Laser Sprites
+LASER_IMAGE = "laserBlue16.png"
+LASER_IMAGE2 = "laserRed16.png"
+LASER_FIRE_DELAY = 500  # Milliseconds between automatic shots
+
+# Damage Player Sprites
+DAMAGE_PLAYER_IMAGE = ["playerShip1_damage1.png", "playerShip1_damage2.png", "playerShip1_damage3.png"]
+DAMAGE_PLAYER_IMAGE2 = ["playerShip2_damage1.png", "playerShip2_damage2.png", "playerShip2_damage3.png"]
+DEATH_FRAME_DURATION = 150  # Milliseconds each death sprite remains visible

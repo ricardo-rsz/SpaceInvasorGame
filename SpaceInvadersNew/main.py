@@ -1,6 +1,7 @@
 import pygame
 from config import *
 from background import draw_background
+from laser import Laser
 from player import Player
 from obstacle import Obstacle
 from powerup import PowerUp
@@ -17,7 +18,7 @@ background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
 # Create a player object
 player = Player(375, 530)
-player2 = Player(100, 100, PLAYER_COLOR2,2, PLAYER2_IMAGE)  # Create a second player object
+player2 = Player(445, 530, PLAYER_COLOR2, 2, PLAYER2_IMAGE, DAMAGE_PLAYER_IMAGE2)  # Create a second player object
 
 selecting_players = True  # The game starts on the player count selection screen
 num_players = 1  # Number of players chosen in the selection screen (1 or 2)
@@ -43,6 +44,9 @@ game_over = False  # Initialize the game over state
 paused = False  # Initialize the pause state
 entering_name = False  # True while the player types their name after a game over
 player_name = ""  # Name being typed
+
+laser = pygame.sprite.Group()
+last_laser_fire_times = {player: -LASER_FIRE_DELAY, player2: -LASER_FIRE_DELAY}
 
 survival_time = 0  # Seconds the players have survived
 
@@ -82,17 +86,21 @@ while running:
         # Toggle pause with ESC (only while the game is still running)
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE and not game_over:
             paused = not paused
-        # Change player 1 speed with + and - (KEYDOWN fires once per press)
+        # Change both players' speed with + and - (KEYDOWN fires once per press)
         elif event.type == pygame.KEYDOWN and not game_over and not paused:
             if event.key in (pygame.K_PLUS, pygame.K_KP_PLUS) or event.unicode == "+":
                 player.change_speed(PLAYER_SPEED_STEP)
+                player2.change_speed(PLAYER_SPEED_STEP)
             elif event.key in (pygame.K_MINUS, pygame.K_KP_MINUS) or event.unicode == "-":
                 player.change_speed(-PLAYER_SPEED_STEP)
+                player2.change_speed(-PLAYER_SPEED_STEP)
         # Restart with R after a game over: reset everything and go back to the player count selection screen
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_r and game_over:
             score = 0
             obstacles = []
             powerups = []
+            laser.empty()
+            last_laser_fire_times = {player: -LASER_FIRE_DELAY, player2: -LASER_FIRE_DELAY}
             for each_player in (player, player2):
                 each_player.reset_position()
                 each_player.reset_lives()
@@ -155,6 +163,22 @@ while running:
                 if alive_player.rect.colliderect(obstacle.rect):
                     alive_player.take_hit(game_time)
 
+        # Move lasers and remove obstacles that they hit
+        laser.update()
+        remaining_obstacles = []
+        for obstacle in obstacles:
+            hit_by_laser = False
+            for shot in laser.sprites():
+                if shot.rect.colliderect(obstacle.rect):
+                    shot.kill()
+                    hit_by_laser = True
+                    score += 2
+                    high_score = max(high_score, score)
+                    break
+            if not hit_by_laser:
+                remaining_obstacles.append(obstacle)
+        obstacles = remaining_obstacles
+
         # The game ends when every active player has run out of lives
         if not any(p.is_alive() for p in active_players):
             game_over = True
@@ -167,7 +191,7 @@ while running:
             if not obstacle.is_off_screen():
                 visible_obstacles.append(obstacle)
             else :
-                score += 1  # Increment the score for each obstacle that goes off screen
+                score += 2  # Increment the score for each obstacle that goes off screen
                 high_score = max(high_score, score)  # Update the record if it was beaten
         obstacles = visible_obstacles
 
@@ -177,6 +201,12 @@ while running:
             player.moveArrows()
         if num_players == 2 and player2.is_alive():
             player2.moveWASD()  # Update the second player's position
+
+        # Players fire automatically while they are alive
+        for active_player in alive_players:
+            if game_time - last_laser_fire_times[active_player] >= LASER_FIRE_DELAY:
+                laser.add(Laser(active_player.rect.centerx, active_player.rect.top))
+                last_laser_fire_times[active_player] = game_time
 
     # Player count selection screen
     if selecting_players:
@@ -199,11 +229,14 @@ while running:
         continue  # Skip the game drawing until the players are chosen
 
     for active_player in active_players:
-        if active_player.is_alive():
+        if active_player.is_alive() or active_player.death_animation_active():
             active_player.draw(screen, game_time)  # Draw each player that is still alive
 
     for obstacle in obstacles:
         obstacle.draw(screen)  # Draw each obstacle
+
+    for shot in laser:
+        screen.blit(shot.image, shot.rect)
 
     for powerup in powerups:
         powerup.draw(screen, small_font)  # Draw each power-up
@@ -217,8 +250,11 @@ while running:
     time_text = font.render(f"Time: {survival_time}s", True, (255, 255, 255))
     screen.blit(time_text, (10, 40))
 
-    # Display player 1 speed
-    speed_text = font.render(f"Speed: {player.current_speed()}", True, (255, 255, 255))
+    # Display the speed of each active player
+    speed_label = f"Speed P1: {player.current_speed()}"
+    if num_players == 2:
+        speed_label += f"  P2: {player2.current_speed()}"
+    speed_text = font.render(speed_label, True, (255, 255, 255))
     screen.blit(speed_text, (10, 70))
 
     # Display the lives of each active player, in the player's color

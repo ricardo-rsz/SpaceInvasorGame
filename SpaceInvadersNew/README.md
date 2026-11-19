@@ -17,11 +17,12 @@ Juego arcade 2D desarrollado en Python con [Pygame](https://www.pygame.org/). Ac
 - **Pausa** con la tecla ESC.
 - **Tiempo de supervivencia** en segundos, que se congela en pausa y en Game Over.
 - **Dificultad progresiva**: cada 10 puntos los obstáculos aparecen 50 ms antes (mínimo 150 ms).
-- **Velocidad ajustable** del jugador 1 con + y − (entre 2 y 12).
+- **Velocidad ajustable** de ambos jugadores con + y − (entre 2 y 12).
 - **Récord de puntuación** (*High Score*) que se conserva entre partidas.
 - **Ranking guardado en `scores.txt`**: al terminar se pide el nombre y la pantalla inicial muestra el TOP 5.
 - **Sistema de vidas**: cada jugador tiene 3 vidas y 2 s de invulnerabilidad (parpadeo) tras cada impacto.
 - **Power-ups** cada 8 s: velocidad temporal (S), vida extra (L) o escudo de invulnerabilidad (I).
+- **Disparos láser automáticos**: cada jugador dispara periódicamente mientras sigue vivo.
 - **Game Over** cuando todos los jugadores activos se quedan sin vidas.
 - **Reinicio** de la partida con la tecla R tras el Game Over.
 - Configuración centralizada en `config.py` (tamaño, FPS, colores, velocidades, frecuencia de aparición).

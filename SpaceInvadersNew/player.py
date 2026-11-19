@@ -8,9 +8,23 @@ from assets import load_image
 class Player:
     """The player controlled by the user"""
 
-    def __init__(self, x, y, color=PLAYER_COLOR, speed=PLAYER_SPEED, image_name=PLAYER_IMAGE):
+    def __init__(
+        self,
+        x,
+        y,
+        color=PLAYER_COLOR,
+        speed=PLAYER_SPEED,
+        image_name=PLAYER_IMAGE,
+        damage_images=DAMAGE_PLAYER_IMAGE,
+    ):
         """Initialize the player with a position and a ship image"""
         self.image = load_image(image_name, width=PLAYER_WIDTH)
+        self.normal_image = self.image
+        self.death_images = [
+            load_image(damage_image, width=PLAYER_WIDTH)
+            for damage_image in reversed(damage_images)
+        ]
+        self.death_animation_started = None
         self.rect = self.image.get_rect(topleft=(x, y))
         self.start_position = (x, y)  # Remember the spawn point for restarts
         self.color = color
@@ -111,12 +125,23 @@ class Player:
             return False
         self.lives -= 1
         self.invulnerable_until = now + INVULNERABILITY_TIME
+        if self.lives <= 0:
+            self.death_animation_started = pygame.time.get_ticks()
         return True
 
     def reset_lives(self):
         """Restore the initial lives and remove any invulnerability"""
         self.lives = PLAYER_LIVES
         self.invulnerable_until = 0
+        self.image = self.normal_image
+        self.death_animation_started = None
+
+    def death_animation_active(self):
+        """Return True while the death sprites are being shown"""
+        if self.death_animation_started is None:
+            return False
+        elapsed = pygame.time.get_ticks() - self.death_animation_started
+        return elapsed < len(self.death_images) * DEATH_FRAME_DURATION
 
     def keep_inside_screen(self):
         """Clamp the player's rect so it never leaves the window"""
@@ -124,6 +149,13 @@ class Player:
 
     def draw(self, surface, now=0):
         """Draw the player on the given surface, blinking while invulnerable"""
+        if self.death_animation_active():
+            elapsed = pygame.time.get_ticks() - self.death_animation_started
+            frame_index = min(elapsed // DEATH_FRAME_DURATION, len(self.death_images) - 1)
+            surface.blit(self.death_images[frame_index], self.rect)
+            return
+        if not self.is_alive():
+            return
         # Blink only for the post-hit invulnerability; the shield is shown with an outline instead
         if now < self.invulnerable_until and (now // BLINK_INTERVAL) % 2 == 0:
             return  # Skip drawing on alternate intervals to create a blink effect
