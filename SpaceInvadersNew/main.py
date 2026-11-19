@@ -6,7 +6,7 @@ from player import Player
 from obstacle import Obstacle
 from powerup import PowerUp
 from scores import top_scores, save_score
-from assets import load_image
+from assets import load_image, load_sound
 
 # Initialize Pygame
 pygame.init()
@@ -15,6 +15,11 @@ pygame.display.set_caption("Moving Player Game")
 clock = pygame.time.Clock()
 background = load_image(BACKGROUND_IMAGE, WIDTH)
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
+laser_sound = load_sound(LASER_SOUND)
+meteor_explosion_sound = load_sound(METEOR_EXPLOSION_SOUND)
+player_explosion_sound = load_sound(PLAYER_EXPLOSION_SOUND)
+powerup_activate_sound = load_sound(POWERUP_ACTIVATE_SOUND)
+powerup_deactivate_sound = load_sound(POWERUP_DEACTIVATE_SOUND)
 
 # Create a player object
 player = Player(375, 530)
@@ -138,7 +143,8 @@ while running:
 
         # Remove temporary effects that have expired
         for alive_player in alive_players:
-            alive_player.update_effects(game_time)
+            if alive_player.update_effects(game_time):
+                powerup_deactivate_sound.play()
 
         # Move the power-ups and give their effect to the first player that touches them
         remaining_powerups = []
@@ -151,6 +157,7 @@ while running:
                     break
             if collector:
                 powerup.apply(collector, game_time)
+                powerup_activate_sound.play()
             elif not powerup.is_off_screen():
                 remaining_powerups.append(powerup)
         powerups = remaining_powerups
@@ -161,7 +168,8 @@ while running:
             # A hit costs one life; the invulnerability time prevents losing several lives at once
             for alive_player in alive_players:
                 if alive_player.rect.colliderect(obstacle.rect):
-                    alive_player.take_hit(game_time)
+                    if alive_player.take_hit(game_time):
+                        player_explosion_sound.play()
 
         # Move lasers and remove obstacles that they hit
         laser.update()
@@ -172,6 +180,7 @@ while running:
                 if shot.rect.colliderect(obstacle.rect):
                     shot.kill()
                     hit_by_laser = True
+                    meteor_explosion_sound.play()
                     score += 2
                     high_score = max(high_score, score)
                     break
@@ -206,6 +215,7 @@ while running:
         for active_player in alive_players:
             if game_time - last_laser_fire_times[active_player] >= LASER_FIRE_DELAY:
                 laser.add(Laser(active_player.rect.centerx, active_player.rect.top))
+                laser_sound.play()
                 last_laser_fire_times[active_player] = game_time
 
     # Player count selection screen

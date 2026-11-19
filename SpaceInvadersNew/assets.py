@@ -3,6 +3,7 @@ import os
 import pygame
 
 _image_cache = {} # Cache for loaded images to avoid reloading them multiple times
+_sound_cache = {} # Cache for loaded sounds to avoid reloading them multiple times
 
 # The assets folder is always next to this file, no matter where the game is launched from
 ASSETS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets")
@@ -26,3 +27,9 @@ def load_image(filename, width=None):
             image = pygame.transform.scale(image, (width, new_height))
         _image_cache[key] = image
     return _image_cache[key] 
+
+def load_sound(filename):
+    """Load a sound effect from the assets folder and cache it"""
+    if filename not in _sound_cache:
+        _sound_cache[filename] = pygame.mixer.Sound(find_asset(filename))
+    return _sound_cache[filename]

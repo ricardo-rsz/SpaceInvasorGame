@@ -23,6 +23,7 @@ Juego arcade 2D desarrollado en Python con [Pygame](https://www.pygame.org/). Ac
 - **Sistema de vidas**: cada jugador tiene 3 vidas y 2 s de invulnerabilidad (parpadeo) tras cada impacto.
 - **Power-ups** cada 8 s: velocidad temporal (S), vida extra (L) o escudo de invulnerabilidad (I).
 - **Disparos láser automáticos**: cada jugador dispara periódicamente mientras sigue vivo.
+- **Efectos de sonido** para disparos, impactos, daño del jugador y power-ups.
 - **Game Over** cuando todos los jugadores activos se quedan sin vidas.
 - **Reinicio** de la partida con la tecla R tras el Game Over.
 - Configuración centralizada en `config.py` (tamaño, FPS, colores, velocidades, frecuencia de aparición).

@@ -65,3 +65,10 @@ LASER_FIRE_DELAY = 500  # Milliseconds between automatic shots
 DAMAGE_PLAYER_IMAGE = ["playerShip1_damage1.png", "playerShip1_damage2.png", "playerShip1_damage3.png"]
 DAMAGE_PLAYER_IMAGE2 = ["playerShip2_damage1.png", "playerShip2_damage2.png", "playerShip2_damage3.png"]
 DEATH_FRAME_DURATION = 150  # Milliseconds each death sprite remains visible
+
+# Sound Effects
+LASER_SOUND = "sfx_laser1.ogg"
+METEOR_EXPLOSION_SOUND = "sfx_twoTone.ogg"
+PLAYER_EXPLOSION_SOUND = "sfx_lose.ogg"
+POWERUP_ACTIVATE_SOUND = "sfx_shieldUp.ogg"
+POWERUP_DEACTIVATE_SOUND = "sfx_shieldDown.ogg"

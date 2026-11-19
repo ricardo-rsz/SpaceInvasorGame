@@ -109,9 +109,14 @@ class Player:
 
     def update_effects(self, now):
         """Remove temporary effects whose duration has finished"""
+        effect_expired = False
         if self.speed_boost and now >= self.speed_boost_until:
             self.speed_boost = 0
-        # The shield needs no cleanup: has_shield() compares against shield_until every frame
+            effect_expired = True
+        if self.shield_until and now >= self.shield_until:
+            self.shield_until = 0
+            effect_expired = True
+        return effect_expired
 
     def reset_effects(self):
         """Remove every power-up effect"""
